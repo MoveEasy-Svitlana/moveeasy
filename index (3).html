@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoveEasy — Страховка для чеської візи D</title>
+<meta name="description" content="Допомагаємо оформити медичне страхування для чеської довгострокової візи типу D. Онлайн-сервіс для клієнтів з будь-якого міста України.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0A2463;
+  --navy-light: #0D2F7A;
+  --yellow: #FFCA00;
+  --yellow-dark: #E6B600;
+  --text: #1C2B3A;
+  --text-muted: #5A6A7A;
+  --bg: #FFFFFF;
+  --bg-light: #F7F9FC;
+  --bg-dark: #06162E;
+  --border: #E2E8F0;
+  --success: #22C55E;
+  --radius: 12px;
+  --shadow: 0 4px 24px rgba(10,36,99,0.08);
+  --shadow-lg: 0 12px 48px rgba(10,36,99,0.14);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── TYPOGRAPHY ── */
+h1,h2,h3,h4 { font-weight: 700; line-height: 1.15; }
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); }
+h3 { font-size: 1.2rem; }
+
+.serif { font-family: 'Playfair Display', serif; }
+
+/* ── LAYOUT ── */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 96px 0; }
+.section-sm { padding: 64px 0; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10,36,99,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,202,0,0.15);
+}
+.nav-inner {
+  max-width: 1100px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 68px;
+}
+.logo {
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+}
+.logo-badge {
+  width: 40px; height: 40px; border-radius: 8px;
+  background: var(--navy-light);
+  border: 2px solid var(--yellow);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700; color: var(--yellow);
+  position: relative;
+}
+.logo-badge::after {
+  content: '';
+  position: absolute; bottom: -2px; left: -2px; right: -2px;
+  height: 4px; background: var(--yellow); border-radius: 0 0 6px 6px;
+}
+.logo-text { display: flex; flex-direction: column; }
+.logo-name {
+  font-size: 1.1rem; font-weight: 700; color: white;
+  letter-spacing: -0.3px; line-height: 1;
+}
+.logo-tagline {
+  font-size: 0.6rem; color: rgba(255,202,0,0.7);
+  letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px;
+}
+.nav-links {
+  display: flex; gap: 32px; list-style: none;
+}
+.nav-links a {
+  color: rgba(255,255,255,0.75); text-decoration: none;
+  font-size: 0.875rem; font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--yellow); }
+.btn-nav {
+  background: var(--yellow); color: var(--navy);
+  padding: 10px 22px; border-radius: 8px;
+  font-weight: 700; font-size: 0.875rem;
+  text-decoration: none; transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-nav:hover { background: var(--yellow-dark); transform: translateY(-1px); }
+
+.burger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 4px; background: none; border: none;
+}
+.burger span {
+  display: block; width: 24px; height: 2px;
+  background: white; border-radius: 2px; transition: all 0.3s;
+}
+.burger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.burger.open span:nth-child(2) { opacity: 0; }
+.burger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+.mobile-menu {
+  display: none; position: fixed; top: 68px; left: 0; right: 0;
+  background: rgba(10,36,99,0.98); backdrop-filter: blur(12px);
+  padding: 24px; z-index: 99; border-bottom: 1px solid rgba(255,202,0,0.15);
+  flex-direction: column; gap: 4px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  color: rgba(255,255,255,0.8); text-decoration: none;
+  font-size: 1rem; font-weight: 500; padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: color 0.2s;
+}
+.mobile-menu a:hover { color: var(--yellow); }
+.mobile-menu .btn-nav { margin-top: 12px; text-align: center; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  background: var(--navy);
+  display: flex; align-items: center;
+  position: relative; overflow: hidden;
+  padding-top: 68px;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 50%, rgba(255,202,0,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(13,47,122,0.8) 0%, transparent 60%);
+}
+.hero-grid {
+  position: absolute; inset: 0; opacity: 0.04;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-inner {
+  position: relative; z-index: 1;
+  max-width: 1100px; margin: 0 auto; padding: 80px 24px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,202,0,0.12); border: 1px solid rgba(255,202,0,0.3);
+  color: var(--yellow); padding: 6px 14px; border-radius: 100px;
+  font-size: 0.8rem; font-weight: 600; letter-spacing: 0.5px;
+  margin-bottom: 24px;
+}
+.hero-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--yellow); }
+.hero h1 { color: white; margin-bottom: 20px; }
+.hero h1 em { color: var(--yellow); font-style: normal; }
+.hero-sub {
+  color: rgba(255,255,255,0.7); font-size: 1.05rem;
+  margin-bottom: 40px; line-height: 1.7;
+}
+.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--yellow); color: var(--navy);
+  padding: 14px 28px; border-radius: 10px;
+  font-weight: 700; font-size: 0.95rem;
+  text-decoration: none; transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover { background: var(--yellow-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,202,0,0.3); }
+.btn-outline {
+  border: 1.5px solid rgba(255,255,255,0.3); color: white;
+  padding: 14px 28px; border-radius: 10px;
+  font-weight: 600; font-size: 0.95rem;
+  text-decoration: none; transition: all 0.2s;
+}
+.btn-outline:hover { border-color: var(--yellow); color: var(--yellow); }
+
+.hero-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px; padding: 32px;
+  backdrop-filter: blur(10px);
+}
+.hero-card-title {
+  color: rgba(255,255,255,0.5); font-size: 0.75rem;
+  letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 20px;
+}
+.hero-stat {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.hero-stat:last-child { border-bottom: none; }
+.hero-stat-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  background: rgba(255,202,0,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; flex-shrink: 0;
+}
+.hero-stat-label { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+.hero-stat-value { color: white; font-weight: 600; font-size: 0.95rem; }
+
+/* ── PROBLEM ── */
+.problem { background: var(--bg-light); }
+.section-label {
+  display: inline-block;
+  color: var(--navy); font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 12px;
+  padding: 4px 12px; background: rgba(10,36,99,0.06); border-radius: 100px;
+}
+.problem-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+  align-items: center; margin-top: 48px;
+}
+.problem-text h2 { margin-bottom: 16px; }
+.problem-text p { color: var(--text-muted); margin-bottom: 32px; line-height: 1.8; }
+.problem-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.problem-list li {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: white; padding: 14px 16px; border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 0.9rem; color: var(--text);
+}
+.problem-list li .icon {
+  width: 28px; height: 28px; border-radius: 6px;
+  background: #FFF3F3; color: #E53E3E;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; flex-shrink: 0; margin-top: 1px;
+}
+.problem-visual {
+  background: var(--navy); border-radius: 20px; padding: 32px;
+  position: relative; overflow: hidden;
+}
+.problem-visual::before {
+  content: ''; position: absolute; top: -30px; right: -30px;
+  width: 120px; height: 120px; border-radius: 50%;
+  background: rgba(255,202,0,0.1);
+}
+.pv-title { color: rgba(255,255,255,0.5); font-size: 0.75rem; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 20px; }
+.pv-item {
+  padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.pv-item:last-child { border-bottom: none; }
+.pv-item-label { color: rgba(255,255,255,0.6); font-size: 0.875rem; }
+.pv-item-value { font-weight: 600; font-size: 0.875rem; }
+.pv-item-value.ok { color: var(--yellow); }
+.pv-item-value.bad { color: #FC8181; }
+.pv-note {
+  margin-top: 20px; background: rgba(255,202,0,0.1);
+  border: 1px solid rgba(255,202,0,0.2);
+  border-radius: 10px; padding: 14px;
+  color: rgba(255,255,255,0.8); font-size: 0.85rem; line-height: 1.6;
+}
+
+/* ── HOW IT WORKS ── */
+.how { background: white; }
+.how-steps {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 32px; margin-top: 56px; position: relative;
+}
+.how-steps::before {
+  content: ''; position: absolute; top: 32px; left: 15%; right: 15%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--yellow), transparent);
+}
+.step {
+  text-align: center; padding: 32px 24px;
+  background: var(--bg-light); border-radius: 16px;
+  border: 1px solid var(--border);
+  transition: all 0.3s; position: relative;
+}
+.step:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--yellow); }
+.step-num {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--navy); color: var(--yellow);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px; position: relative; z-index: 1;
+}
+.step h3 { margin-bottom: 10px; color: var(--navy); }
+.step p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+
+/* ── PACKAGES ── */
+.packages { background: var(--bg-light); }
+.packages-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px; margin-top: 56px; align-items: stretch;
+}
+.package {
+  background: white; border-radius: 20px;
+  border: 1.5px solid var(--border);
+  padding: 32px; transition: all 0.3s;
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.package-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; flex: 1; }
+.package:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+.package.featured {
+  border-color: var(--navy); transform: scale(1.03);
+  box-shadow: var(--shadow-lg);
+}
+.package.featured:hover { transform: scale(1.03) translateY(-4px); }
+.featured-badge {
+  position: absolute; top: 0; right: 24px;
+  background: var(--yellow); color: var(--navy);
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px;
+  padding: 4px 12px; border-radius: 0 0 8px 8px;
+}
+.package-name { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+.package-price {
+  font-size: 2.2rem; font-weight: 800; color: var(--navy);
+  line-height: 1; margin-bottom: 4px;
+}
+.package-price span { font-size: 1rem; font-weight: 500; color: var(--text-muted); }
+.package-desc { color: var(--text-muted); font-size: 0.875rem; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+.package-features li {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 0.875rem; color: var(--text);
+}
+.package-features li .check {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(34,197,94,0.12); color: var(--success);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem; flex-shrink: 0; margin-top: 1px;
+}
+.package-features li .cross {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(0,0,0,0.05); color: var(--text-muted);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem; flex-shrink: 0; margin-top: 1px;
+}
+.package-features li.muted { color: var(--text-muted); }
+.btn-package {
+  width: 100%; padding: 14px;
+  border-radius: 10px; font-weight: 700; font-size: 0.9rem;
+  text-decoration: none; text-align: center;
+  display: block; transition: all 0.2s; cursor: pointer;
+  border: none;
+}
+.btn-package.primary {
+  background: var(--navy); color: white;
+}
+.btn-package.primary:hover { background: var(--navy-light); transform: translateY(-1px); }
+.btn-package.secondary {
+  background: var(--bg-light); color: var(--navy);
+  border: 1.5px solid var(--border);
+}
+.btn-package.secondary:hover { border-color: var(--navy); background: white; }
+.btn-package.featured-btn {
+  background: var(--yellow); color: var(--navy);
+}
+.btn-package.featured-btn:hover { background: var(--yellow-dark); transform: translateY(-1px); }
+
+.packages-disclaimer {
+  margin-top: 32px; padding: 20px 24px;
+  background: white; border-radius: 12px;
+  border: 1px solid var(--border);
+  color: var(--text-muted); font-size: 0.825rem; line-height: 1.7;
+}
+
+/* ── TRUST ── */
+.trust { background: white; }
+.trust-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 24px; margin-top: 56px;
+}
+.trust-card {
+  padding: 28px; border-radius: 16px;
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+}
+.trust-card:hover { border-color: var(--navy); box-shadow: var(--shadow); }
+.trust-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: rgba(10,36,99,0.07);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; margin-bottom: 16px;
+}
+.trust-card h3 { margin-bottom: 8px; font-size: 1rem; }
+.trust-card p { color: var(--text-muted); font-size: 0.875rem; line-height: 1.7; }
+
+/* ── FAQ ── */
+.faq { background: var(--bg-light); }
+.faq-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px; margin-top: 56px;
+}
+.faq-item {
+  background: white; border-radius: 14px;
+  border: 1px solid var(--border); overflow: hidden;
+}
+.faq-q {
+  padding: 20px 24px; font-weight: 600; font-size: 0.9rem;
+  cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+  gap: 16px;
+}
+.faq-q:hover { color: var(--navy); }
+.faq-toggle {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--bg-light); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0; transition: all 0.2s;
+  color: var(--navy); font-weight: 300;
+}
+.faq-item.open .faq-toggle { background: var(--navy); color: white; transform: rotate(45deg); }
+.faq-a {
+  padding: 0 24px; max-height: 0; overflow: hidden;
+  color: var(--text-muted); font-size: 0.875rem; line-height: 1.8;
+  transition: all 0.3s;
+}
+.faq-item.open .faq-a { padding: 0 24px 20px; max-height: 200px; }
+
+/* ── CONTACT ── */
+.contact {
+  background: var(--navy); padding: 96px 0;
+  position: relative; overflow: hidden;
+}
+.contact::before {
+  content: ''; position: absolute;
+  top: -100px; right: -100px; width: 400px; height: 400px;
+  border-radius: 50%; background: rgba(255,202,0,0.05);
+}
+.contact-inner { position: relative; z-index: 1; text-align: center; }
+.contact h2 { color: white; margin-bottom: 12px; }
+.contact-sub { color: rgba(255,255,255,0.6); margin-bottom: 40px; font-size: 1rem; }
+.contact-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-contact {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 28px; border-radius: 12px;
+  font-weight: 700; font-size: 0.95rem;
+  text-decoration: none; transition: all 0.2s;
+}
+.btn-tg { background: #229ED9; color: white; }
+.btn-tg:hover { background: #1a8bbf; transform: translateY(-2px); }
+.btn-vb { background: #7360F2; color: white; }
+.btn-vb:hover { background: #6152d4; transform: translateY(-2px); }
+.contact-note {
+  margin-top: 32px; color: rgba(255,255,255,0.4);
+  font-size: 0.8rem;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--bg-dark); padding: 40px 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer-inner {
+  max-width: 1100px; margin: 0 auto; padding: 0 24px;
+}
+.footer-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 24px; gap: 40px; flex-wrap: wrap;
+}
+.footer-logo .logo-name { font-size: 1.2rem; }
+.footer-disclaimer {
+  color: rgba(255,255,255,0.25); font-size: 0.75rem;
+  line-height: 1.8; max-width: 580px;
+}
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px;
+}
+.footer-copy { color: rgba(255,255,255,0.2); font-size: 0.75rem; }
+.footer-kvid { color: rgba(255,255,255,0.2); font-size: 0.75rem; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-content > * { animation: fadeUp 0.6s ease both; }
+.hero-content > *:nth-child(1) { animation-delay: 0.1s; }
+.hero-content > *:nth-child(2) { animation-delay: 0.2s; }
+.hero-content > *:nth-child(3) { animation-delay: 0.3s; }
+.hero-content > *:nth-child(4) { animation-delay: 0.4s; }
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .btn-nav.desktop { display: none; }
+  .burger { display: flex; }
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 60px 24px; }
+  .hero-card { display: none; }
+  .hero h1 { font-size: 2rem; }
+  .hero-actions { flex-direction: column; }
+  .btn-primary, .btn-outline { text-align: center; justify-content: center; }
+  .problem-grid { grid-template-columns: 1fr; }
+  .pv-note { font-size: 0.8rem; }
+  .how-steps { grid-template-columns: 1fr; gap: 16px; }
+  .how-steps::before { display: none; }
+  .step { padding: 24px 20px; }
+  .packages-grid { grid-template-columns: 1fr; }
+  .package.featured { transform: none; }
+  .package.featured:hover { transform: translateY(-4px); }
+  .trust-grid { grid-template-columns: 1fr; }
+  .faq-grid { grid-template-columns: 1fr; }
+  .contact-buttons { flex-direction: column; align-items: center; }
+  .btn-contact { width: 100%; max-width: 320px; justify-content: center; }
+  .footer-top { flex-direction: column; gap: 24px; }
+  .footer-bottom { flex-direction: column; text-align: center; gap: 8px; }
+  .section { padding: 64px 0; }
+  .illus { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-badge">M</div>
+      <div class="logo-text">
+        <span class="logo-name">MoveEasy</span>
+        <span class="logo-tagline">Візові документи без зайвого стресу</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#how">Як це працює</a></li>
+      <li><a href="#packages">Пакети</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact">Контакт</a></li>
+    </ul>
+    <a href="#contact" class="btn-nav desktop">Отримати допомогу</a>
+    <button class="burger" id="burger" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#how" onclick="closeMobile()">Як це працює</a>
+  <a href="#packages" onclick="closeMobile()">Пакети</a>
+  <a href="#faq" onclick="closeMobile()">FAQ</a>
+  <a href="#contact" onclick="closeMobile()">Контакт</a>
+  <a href="#contact" class="btn-nav" onclick="closeMobile()">Отримати допомогу</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span></span>
+        Онлайн-сервіс для клієнтів з усієї України
+      </div>
+      <h1>Страховка для чеської довгострокової візи — <em>правильно</em> з першого разу</h1>
+      <p class="hero-sub">Допомагаємо оформити медичне страхування з покриттям 400 000 EUR для чеського консульства. Інструкція українською, підтримка на кожному кроці.</p>
+      <div class="hero-actions">
+        <a href="#packages" class="btn-primary">Обрати пакет →</a>
+        <a href="#how" class="btn-outline">Як це працює</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-title">Що перевіряє консульство</div>
+      <div class="hero-stat">
+        <div class="hero-stat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFCA00" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <div class="hero-stat-label">Мінімальне покриття</div>
+          <div class="hero-stat-value">400 000 EUR</div>
+        </div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFCA00" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div>
+          <div class="hero-stat-label">Тип страховки</div>
+          <div class="hero-stat-value">Комплексна медична</div>
+        </div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFCA00" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div>
+          <div class="hero-stat-label">Страховик</div>
+          <div class="hero-stat-value">Авторизований у Чехії</div>
+        </div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFCA00" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div>
+          <div class="hero-stat-label">Мінімальний термін</div>
+          <div class="hero-stat-value">На весь термін візи</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE DIVIDER -->
+<div style="background:var(--navy);line-height:0;margin-bottom:-2px">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="display:block;width:100%;height:60px">
+    <path d="M0,0 C360,60 1080,60 1440,0 L1440,60 L0,60 Z" fill="#F7F9FC"/>
+  </svg>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem section" id="problem">
+  <div class="container">
+    <div class="section-label">Чому відмовляють</div>
+    <div class="problem-grid">
+      <div class="problem-text">
+        <h2>Більшість людей приходять з неправильною страховкою</h2>
+        <p>Консульство повертає документи щодня. Не через відсутність страховки — а через неправильний тип, компанію або суму покриття. Це стосується будь-якого типу довгострокової чеської візи.</p>
+        <ul class="problem-list">
+          <li>
+            <div class="icon">✕</div>
+            Туристична страховка з покриттям 30 000–50 000 EUR не підходить для візи D
+          </li>
+          <li>
+            <div class="icon">✕</div>
+            Не всі страхові компанії авторизовані для чеського консульства
+          </li>
+          <li>
+            <div class="icon">✕</div>
+            Помилка в даних, термінах або типі страховки — поліс недійсний
+          </li>
+        </ul>
+      </div>
+      <div class="problem-visual">
+        <div class="pv-title">Що потрібно для візи D</div>
+        <div class="pv-item">
+          <span class="pv-item-label">Покриття</span>
+          <span class="pv-item-value ok">400 000 EUR ✓</span>
+        </div>
+        <div class="pv-item">
+          <span class="pv-item-label">Тип</span>
+          <span class="pv-item-value ok">Комплексна ✓</span>
+        </div>
+        <div class="pv-item">
+          <span class="pv-item-label">Страховик</span>
+          <span class="pv-item-value ok">Авторизований ✓</span>
+        </div>
+        <div class="pv-item">
+          <span class="pv-item-label">Термін</span>
+          <span class="pv-item-value ok">Весь термін візи ✓</span>
+        </div>
+        <div class="pv-item">
+          <span class="pv-item-label">Франшиза</span>
+          <span class="pv-item-value ok">0 EUR ✓</span>
+        </div>
+        <div class="pv-note">
+          MoveEasy допомагає оформити страховку яка відповідає всім цим вимогам з першого разу.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="how section" id="how">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-label">Процес</div>
+      <h2>Три кроки до правильного полісу</h2>
+    </div>
+    <div class="how-steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div style="margin:16px auto;width:80px;height:80px;opacity:0.15">
+          <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="10" width="60" height="60" rx="12" fill="#0A2463"/>
+            <rect x="22" y="28" width="36" height="4" rx="2" fill="#FFCA00"/>
+            <rect x="22" y="38" width="24" height="4" rx="2" fill="#FFCA00"/>
+            <rect x="22" y="48" width="30" height="4" rx="2" fill="#FFCA00"/>
+          </svg>
+        </div>
+        <h3>Обираєш пакет</h3>
+        <p>Вибери формат допомоги — самостійно за інструкцією, з підтримкою в чаті або разом на дзвінку.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div style="margin:16px auto;width:80px;height:80px;opacity:0.15">
+          <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="10" width="60" height="60" rx="12" fill="#0A2463"/>
+            <circle cx="40" cy="35" r="12" stroke="#FFCA00" stroke-width="3"/>
+            <path d="M33 42 L47 42 L50 58 L30 58Z" fill="#FFCA00"/>
+          </svg>
+        </div>
+        <h3>Оформлюєш страховку</h3>
+        <p>Заповнюєш форму на офіційному сайті страховика. Ми допомагаємо на кожному кроці залежно від пакету.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div style="margin:16px auto;width:80px;height:80px;opacity:0.15">
+          <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="10" width="60" height="60" rx="12" fill="#0A2463"/>
+            <path d="M25 42 L35 52 L55 30" stroke="#FFCA00" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Подаєш документи</h3>
+        <p>Готовий поліс приходить на email за 15 хвилин. Несеш до консульства — і документи приймають.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section class="packages section" id="packages">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-label">Пакети</div>
+      <h2>Обери свій формат допомоги</h2>
+    </div>
+    <div class="packages-grid">
+
+      <!-- Basic -->
+      <div class="package">
+        <div class="package-name">Базовий</div>
+        <div class="package-price">1 200 <span>грн</span></div>
+        <p class="package-desc">Для тих хто має час і готовий розібратись самостійно</p>
+        <ul class="package-features">
+          <li><div class="check">✓</div> Покрокова інструкція українською зі скріншотами</li>
+          <li><div class="check">✓</div> Пояснення що обирати на кожному кроці</li>
+          <li><div class="check">✓</div> Список типових помилок</li>
+          <li><div class="check">✓</div> Доступ одразу після оплати</li>
+          <li class="muted"><div class="cross">—</div> Без підтримки в чаті</li>
+          <li class="muted"><div class="cross">—</div> Без перевірки полісу</li>
+        </ul>
+        <a href="#contact" class="btn-package secondary">Обрати →</a>
+      </div>
+
+      <!-- Featured -->
+      <div class="package featured">
+        <div class="featured-badge">Рекомендуємо</div>
+        <div class="package-name">Із супроводом</div>
+        <div class="package-price">1 900 <span>грн</span></div>
+        <p class="package-desc">Для тих хто хоче щоб хтось був поруч під час оформлення</p>
+        <ul class="package-features">
+          <li><div class="check">✓</div> Покрокова інструкція українською</li>
+          <li><div class="check">✓</div> Онлайн підтримка в Telegram або Viber</li>
+          <li><div class="check">✓</div> Відповіді на питання в реальному часі</li>
+          <li><div class="check">✓</div> Перевірка готового полісу</li>
+          <li><div class="check">✓</div> Відповідь протягом 24 годин</li>
+        </ul>
+        <a href="#contact" class="btn-package featured-btn">Обрати →</a>
+      </div>
+
+      <!-- Premium -->
+      <div class="package">
+        <div class="package-name">Під ключ</div>
+        <div class="package-price">2 200 <span>грн</span></div>
+        <p class="package-desc">Для тих хто подає документи сьогодні або завтра і хоче максимум підтримки</p>
+        <ul class="package-features">
+          <li><div class="check">✓</div> Покрокова інструкція українською</li>
+          <li><div class="check">✓</div> Відеодзвінок або голосовий дзвінок до 45 хв</li>
+          <li><div class="check">✓</div> Заповнюємо страховку разом в реальному часі</li>
+          <li><div class="check">✓</div> Перевірка полісу одразу після отримання</li>
+          <li><div class="check">✓</div> Відповідь протягом 30–60 хвилин</li>
+          <li><div class="check">✓</div> Пріоритетна обробка замовлення</li>
+          <li><div class="check">✓</div> Підтримка в Telegram або Viber</li>
+        </ul>
+        <a href="#contact" class="btn-package primary">Обрати →</a>
+      </div>
+
+    </div>
+    <div class="packages-disclaimer">
+      MoveEasy — це не страхова компанія. Ми надаємо інформаційно-консультаційну допомогу з оформлення страховки. Страховий договір ти укладаєш напряму з авторизованим страховиком. Вимоги до страховки можуть відрізнятись залежно від типу візи та конкретного консульства — рекомендуємо уточнювати актуальні вимоги перед подачею документів. Ми не несемо відповідальності за рішення консульства та за правильність введених клієнтом даних.
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="trust section" id="trust">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-label">Довіра</div>
+      <h2>Чому нам довіряють</h2>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="trust-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0A2463" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3>Твої дані в безпеці</h3>
+        <p>Ми не зберігаємо і не передаємо твої персональні дані. Всі дані вводяться напряму на захищеному сайті страховика.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0A2463" stroke-width="1.8" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+        </div>
+        <h3>Перевірений продукт</h3>
+        <p>Ми рекомендуємо страховку яка відповідає вимогам чеського консульства — покриття 400 000 EUR, без франшизи, авторизований страховик.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0A2463" stroke-width="1.8" stroke-linecap="round"><path d="M3 5h12M3 8h9m-9 3h6m4 0l4-4 4 4M20 7v10"/></svg>
+        </div>
+        <h3>Інструкція українською</h3>
+        <p>Сайт страховика — не українською. Наша інструкція зі скріншотами та поясненнями — повністю українською мовою.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0A2463" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3>Швидко і зручно</h3>
+        <p>Після оплати отримуєш доступ одразу. Весь процес — від нашої послуги до полісу на email — до 30 хвилин.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq section" id="faq">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-label">Питання</div>
+      <h2>Часті питання</h2>
+    </div>
+    <div class="faq-grid">
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Яка мінімальна тривалість страховки?
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">Страховка має покривати весь термін вашого перебування в Чехії — від першого до останнього дня. Мінімальний термін визначається терміном вашої візи, а не фіксованою кількістю днів.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Ця страховка підходить для всіх типів чеської довгострокової візи D?
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">Вимога щодо страховки 400 000 EUR стосується будь-якої довгострокової чеської візи D — робочої, студентської, сімейної тощо. Але конкретні вимоги можуть відрізнятись залежно від типу заяви. Рекомендуємо уточнити у нас перед оплатою.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Я з Києва — ваш сервіс для мене теж підходить?
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">Так. Ми працюємо онлайн — клієнти з будь-якого міста України. Консультація в Telegram або Viber, поліс приходить на email.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Чи можна оформити страховку на кількох людей?
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">Кожна особа оформляє поліс окремо. Якщо вас кілька — напишіть нам, домовимось про умови.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Що якщо картка не проходить оплату на сайті страховика?
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">Спробуйте іншу картку або PayPal. Якщо не виходить — напишіть нам, разом вирішимо. Деякі картки мають ліміти на міжнародні платежі.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Коли потрібно оформити страховку?
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">До подачі документів до консульства. Поліс є обов'язковим документом для отримання візи D і подається разом з усім пакетом.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="section-label" style="background:rgba(255,202,0,0.15);color:var(--yellow)">Зв'язок</div>
+      <h2>Є питання або готові почати?</h2>
+      <p class="contact-sub">Напишіть нам — відповімо швидко і допоможемо обрати правильний пакет. Працюємо щодня.</p>
+      <div class="contact-buttons">
+        <a href="https://t.me/moveeasy_ua" class="btn-contact btn-tg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8l-1.68 7.92c-.12.56-.44.7-.9.44l-2.5-1.84-1.2 1.16c-.14.14-.26.26-.52.26l.18-2.58 4.7-4.24c.2-.18-.04-.28-.32-.1L7.7 14.96l-2.46-.76c-.54-.16-.54-.54.1-.8l9.62-3.72c.44-.16.84.1.68.8z"/></svg>
+          Написати в Telegram
+        </a>
+        <a href="viber://chat?number=moveeasy" class="btn-contact btn-vb">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.4 2C6.27 2 2.4 5.7 2.4 10.56c0 2.67 1.17 5.06 3.09 6.71v3.23l3.1-1.68c.88.23 1.82.36 2.81.36 5.13 0 9-3.7 9-8.56S16.53 2 11.4 2zm.9 11.5l-2.3-2.46-4.5 2.46 4.95-5.25 2.35 2.46 4.45-2.46-4.95 5.25z"/></svg>
+          Написати у Viber
+        </a>
+      </div>
+      <p class="contact-note">Відповідаємо протягом кількох годин у робочий час</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <a href="#" class="logo footer-logo">
+        <div class="logo-badge">M</div>
+        <div class="logo-text">
+          <span class="logo-name" style="color:white">MoveEasy</span>
+          <span class="logo-tagline">Візові документи без зайвого стресу</span>
+        </div>
+      </a>
+      <p class="footer-disclaimer">
+        MoveEasy надає виключно інформаційно-консультаційні послуги. Ми не є страховою компанією, страховим агентом або брокером. Ми не несемо відповідальності за правильність введених клієнтом даних та за рішення консульства щодо прийняття або відхилення документів. Страховий договір укладається клієнтом напряму з авторизованим страховиком. © 2026 MoveEasy. Всі права захищені.
+      </p>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 MoveEasy · moveeasy.com.ua</span>
+      <span class="footer-kvid">ФОП Кищук Світлана · КВЕД 63.99, 70.22</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(el) {
+  const item = el.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+function closeMobile() {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('burger').classList.remove('open');
+}
+
+document.getElementById('burger').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('open');
+  document.getElementById('burger').classList.toggle('open');
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+    }
+  });
+});
+
+window.addEventListener('scroll', () => {
+  document.querySelector('nav').style.boxShadow =
+    window.scrollY > 20 ? '0 4px 24px rgba(0,0,0,0.3)' : 'none';
+});
+
+// Fade in on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.step, .package, .trust-card, .faq-item').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
